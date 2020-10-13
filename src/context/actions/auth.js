@@ -1,4 +1,4 @@
-import { myFirebase } from "../server/firebase";
+import { myFirebase } from "../../server/firebase";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

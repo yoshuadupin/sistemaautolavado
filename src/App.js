@@ -4,12 +4,11 @@ import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
-import SiderLayout from './ui/SiderLayout';
-import Login from './ui/Login'
 import 'antd/dist/antd.css';
+import Login from './container/Login';
+import SiderLayout from './components/SiderBar/SiderLayout';
 
 
-import HomeTest from './ui/HomeTest';
 
 function App(props) {
   const { isAuthenticated, isVerifying } = props;

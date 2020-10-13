@@ -17,14 +17,14 @@ import {
   Switch,
   Link
 } from "react-router-dom";
-import ContentSupervisor from './ContentSupervisor';
-import ContentLavadores from './ContentLavadores';
-import ContentCerramiento from './ContentCerramiento';
-import ContentTalonarios from './ContentTalonarios';
-import ContentInventario from './ContentInventario';
-import ContentCarritos from './ContentCarritos';
+import ContentSupervisor from '../../container/Supervisores';
+import ContentLavadores from '../../container/Lavadores';
+import ContentCerramiento from '../../container/Cerramientos';
+import ContentTalonarios from '../../container/Talonarios';
+import ContentInventario from '../../container/Inventario';
+import ContentCarritos from '../../container/Carritos';
 import { connect } from "react-redux";
-import { logoutUser } from "../actions/auth";
+import { logoutUser } from "../../context/actions/auth";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
