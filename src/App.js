@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
@@ -7,6 +6,7 @@ import routes from './routes';
 import PrivateRoute from './components/PrivateRoute'
 import RegisterContainer from './containers/Register';
 import LoginContainer from './containers/Login';
+import Dashboard from './components/Dashboard';
 
 
 function App(props) {
@@ -20,7 +20,8 @@ function App(props) {
 
             <Route path="/login" exact component={LoginContainer} />
             <Route path="/auth/register" exact component={RegisterContainer} />
-            <PrivateRoute />
+            <Route path="/dashboard" exact component={Dashboard} />
+            
 
           </Switch>
         </AuthProvider>

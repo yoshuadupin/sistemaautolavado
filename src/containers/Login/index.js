@@ -2,11 +2,9 @@ import React, { useState } from 'react'
 import { Form, Button, Checkbox, Input, TextField, Alert } from 'antd';
 import 'antd/dist/antd.css'
 import styles from './styles.css'
-import { Link  , useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Text from 'antd/lib/typography/Text';
 import { useAuth } from '../../context/AuthContext'
-
-
 
 const layout = {
   labelCol: {
