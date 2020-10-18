@@ -1,0 +1,12 @@
+.form {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 400px;
+    justify-content: center;
+    align-self: center;
+}
+
+
+
+
+

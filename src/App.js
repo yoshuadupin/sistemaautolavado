@@ -1,36 +1,35 @@
 import React from 'react';
-
-import { Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
-import 'antd/dist/antd.css';
-import Login from './container/Login';
-import SiderLayout from './components/SiderBar/SiderLayout';
-
+import { AuthProvider } from './context/AuthContext';
+import routes from './routes';
+import PrivateRoute from './components/PrivateRoute'
+import RegisterContainer from './containers/Register';
+import LoginContainer from './containers/Login';
+import Dashboard from './components/Dashboard';
 
 
 function App(props) {
   const { isAuthenticated, isVerifying } = props;
   return (
-    <Switch>
-      <ProtectedRoute
-        exact
-        path="/"
-        component={SiderLayout}
-        isAuthenticated={isAuthenticated}
-        isVerifying={isVerifying}
-      />
-      <Route path="/login" component={Login} />
-    </Switch>
+    <div className="App">
+      <Router>
+        <AuthProvider>
+
+          <Switch>
+
+            <Route path="/login" exact component={LoginContainer} />
+            <Route path="/auth/register" exact component={RegisterContainer} />
+            <Route path="/dashboard" exact component={Dashboard} />
+            
+
+          </Switch>
+        </AuthProvider>
+
+      </Router>
+    </div>
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-    isVerifying: state.auth.isVerifying
-  };
-}
 
-export default connect(mapStateToProps)(App);
+export default App;
