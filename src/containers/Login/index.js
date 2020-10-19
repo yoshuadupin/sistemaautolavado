@@ -35,7 +35,7 @@ const LoginContainer = () => {
       setError('')
       setLoading(true)
       await login(values.email, values.password)
-      history.push("/carritos")
+      history.push("/dashboard")
     } catch {
       setError('Failed to log in')
     }

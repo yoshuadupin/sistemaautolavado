@@ -7,6 +7,7 @@ import PrivateRoute from './components/PrivateRoute'
 import RegisterContainer from './containers/Register';
 import LoginContainer from './containers/Login';
 import Dashboard from './components/Dashboard';
+import SiderLayout from './components/SiderBar/SiderLayout'
 
 
 function App(props) {
@@ -20,7 +21,7 @@ function App(props) {
 
             <Route path="/login" exact component={LoginContainer} />
             <Route path="/auth/register" exact component={RegisterContainer} />
-            <Route path="/dashboard" exact component={Dashboard} />
+            <PrivateRoute path="/dashboard" exact component={SiderLayout} />
             
 
           </Switch>

@@ -23,9 +23,7 @@ const CarritosContainer = () => {
             {error && <Alert message={error} type="warning" />}
             <strong> Email:</strong>{currentUser.email}
 
-            <Button onClick={handleLogout} type="link">
-                Log Out
-            </Button>
+         
         </div>
     )
 }
