@@ -1,40 +1,49 @@
+/*
 import CarritosContainer from "../containers/Carritos";
 import CerramientoContainer from "../containers/Cerramiento";
-import CuentaContainer from "../containers/Cuenta";
+
 import InventarioContainer from "../containers/Inventario";
 import LavadoresContainer from "../containers/Lavadores";
 import SupervisoresContainer from "../containers/Supervisores";
 import TalonarioContainer from "../containers/Talonarios";
+*/
 
+import ContentSupervisor from '../container/Supervisores';
+import ContentLavadores from '../container/Lavadores';
+import ContentCerramiento from '../container/Cerramientos';
+import ContentTalonarios from '../container/Talonarios';
+import ContentInventario from '../container/Inventario';
+import ContentCarritos from '../container/Carritos';
+import CuentaContainer from '../container/Cuenta';
 
 const routes = [
   
     {
         path: '/supervisores',
-        component: SupervisoresContainer,
+        component: ContentSupervisor,
         title:'Supervisores'
     },
     {
         path: '/lavadores',
-        component: LavadoresContainer,
+        component: ContentLavadores,
         title:'Lavadores'
 
     }, {
-        path: '/cerramiento',
-        component: CerramientoContainer,
+        path: '/cerramientos',
+        component: ContentCerramiento,
         title:'Cerramiento'
     }, {
         path: '/talonarios',
-        component: TalonarioContainer,
+        component: ContentTalonarios,
         title:'Talonarios'
     },
     {
         path: '/inventario',
-        component: InventarioContainer,
+        component: ContentInventario,
         title:'Inventario'
     } , {
         path: '/carritos',
-        component: CarritosContainer,
+        component: ContentCarritos,
         title:'Carritos'
     } ,
     {

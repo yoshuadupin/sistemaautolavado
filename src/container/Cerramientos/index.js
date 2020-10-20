@@ -1,6 +1,7 @@
-import React from 'react';
-import { Button, Table, Space, Col, Row, Input } from 'antd';
+import React, { useState } from 'react';
+import {  Modal, Button, Table, Space, Col, Row, Input} from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import FormOnModal from './FormOnModal'
 const { Search } = Input;
 
 const dataSource = [
@@ -58,7 +59,38 @@ const columns = [
 
 ];
 
- const  ContentCerramiento = () => {
+
+
+const ContentCerramiento = () => {
+
+
+    const [modalText, setmodalText] = useState('Content of  the modal')
+    const [visibleModal, setvisibleModal] = useState(false)
+    const [confirmLoading, setconfirmLoading] = useState(false)
+    const [componentSize, setComponentSize] = useState('default');
+
+
+    const showModal = () => {
+        setvisibleModal(true);
+    };
+
+    const handleOk = () => {
+
+        setmodalText('The modal will be closed after two seconds');
+        setconfirmLoading(true);
+
+        setTimeout(() => {
+
+            setvisibleModal(false)
+            setconfirmLoading(false)
+        }, 2000);
+    };
+
+    const handleCancel = () => {
+        console.log('Clicked cancel button');
+        setvisibleModal(false)
+    };
+
 
     return (
         <div>
@@ -72,7 +104,16 @@ const columns = [
                     <Col span={8} offset={7}>
                         <Space size='large' style={{ margin: '16 px' }}>
 
-                            <Button icon={<PlusCircleOutlined />} type="link">Crear Cerramiento</Button>
+                            <Button onClick={showModal} icon={<PlusCircleOutlined />} type="link">Crear Cerramiento</Button>
+                            <Modal
+                                title="Registrar Cerramiento"
+                                visible={visibleModal}
+                                onOk={handleOk}
+                                confirmLoading={confirmLoading}
+                                onCancel={handleCancel}
+                            >
+                                <FormOnModal />
+                            </Modal>
                             <Button type="primary">Editar</Button>
                             <Search
                                 placeholder="Buscar..."

@@ -10,7 +10,7 @@ import {
   UserOutlined,
   BellOutlined,
 } from '@ant-design/icons';
-import "./layout.css"
+import "./style.css"
 import {
   BrowserRouter as Router,
   Route,
@@ -24,13 +24,15 @@ import ContentTalonarios from '../../container/Talonarios';
 import ContentInventario from '../../container/Inventario';
 import ContentCarritos from '../../container/Carritos';
 import { useAuth } from '../../context/AuthContext'
+import routes from '../../routes'
 
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 
-const SiderLayout = () => {
+
+const SiderLayout = (props) => {
 
   const [error, setError] = useState('');
   const [collapsed, setCollapsed] = useState();
@@ -39,10 +41,8 @@ const SiderLayout = () => {
 
 
 
-  
   const onCollapse = collapsed => {
     setCollapsed(collapsed);
-
   };
 
   async function handleLogout() {
@@ -64,32 +64,32 @@ const SiderLayout = () => {
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1" icon={<AuditOutlined />}>
-              <Link to="/supervisores">
+              <Link to={`${props.path}/supervisores`}>
                 Supervisores
                 </Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<IdcardFilled />}>
-              <Link to="/lavadores">
+              <Link to={`${props.path}/lavadores`}>
                 Lavadores
                 </Link>
             </Menu.Item>
             <Menu.Item key="3" icon={<ShopFilled />}>
-              <Link to="/cerramientos">
+              <Link to={`${props.path}/cerramientos`}>
                 Cerramiento
                 </Link>
             </Menu.Item>
             <Menu.Item key="4" icon={<ReadFilled />}>
-              <Link to="/talonarios">
+              <Link to={`${props.path}/talonarios`}>
                 Talonarios
                 </Link>
             </Menu.Item>
             <Menu.Item key="5" icon={<ReconciliationFilled />}>
-              <Link to="/inventario">
+              <Link to={`${props.path}/inventario`}>
                 Inventario
                 </Link>
             </Menu.Item>
             <Menu.Item key="6" icon={<CarFilled />}>
-              <Link to="/carritos">
+              <Link to={`${props.path}/carritos`}>
                 Carritos
                 </Link>
             </Menu.Item>
@@ -113,30 +113,22 @@ const SiderLayout = () => {
           </Header>
           <Content style={{ margin: '0 16px' }}>
             <Switch>
-              <Route path="/supervisores">
-                <ContentSupervisor />
-              </Route>
-              <Route path="/lavadores">
-                <ContentLavadores />
-              </Route>
-              <Route path="/cerramientos">
-                <ContentCerramiento />
-              </Route>
-              <Route path="/talonarios">
-                <ContentTalonarios />
-              </Route>
-              <Route path="/inventario">
-                <ContentInventario />
-              </Route>
-              <Route path="/carritos">
-                <ContentCarritos />
-              </Route>
+              {
+                routes.map((route, index) => (
+                  <Route
+                    key={index}
+                    exact
+                    path={`${props.path}${route.path}`}
+                    render={(props) => {
+                      return  <route.component {...props} />
+                    }} />
+                ))
+              }
 
             </Switch>
             <h2>Profile</h2>
             {error && <Alert message={error} type="warning" />}
             <strong> Email:</strong>{currentUser.email}
-
             <Button onClick={handleLogout} type="link">
               Log Out
             </Button>

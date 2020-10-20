@@ -1,130 +1,118 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { loginUser } from "../../context/actions/auth";
-import { withStyles } from "@material-ui/styles";
+import React, { useEffect, useState } from 'react'
+import { Form, Button, Checkbox, Input, TextField, Alert } from 'antd';
+import 'antd/dist/antd.css'
+import styles from './styles.css'
+import { Link, useHistory } from 'react-router-dom';
+import Text from 'antd/lib/typography/Text';
+import { useAuth } from '../../context/AuthContext'
 
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Container from "@material-ui/core/Container";
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailLayout = {
+  wrapperCol: {
+    offset: 18,
+    span: 16,
+  },
+};
 
-import { Form, Input, Button as ButtonAs, Checkbox } from 'antd';
+const LoginContainer = () => {
 
-const styles = () => ({
-  "@global": {
-    body: {
-      backgroundColor: "#fff"
+  const { login } = useAuth()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState('')
+  const history = useHistory()
+  
+  useEffect(() => {
+    let isUnmount = false;
+
+    if(!isUnmount){
+      setLoading('')
+      setError('')
     }
-  },
-  paper: {
-    marginTop: 100,
-    display: "flex",
-    padding: 20,
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  avatar: {
-    marginLeft: "auto",
-    marginRight: "auto",
-    backgroundColor: "#f50057"
-  },
-  form: {
-    marginTop: 1
-  },
-  errorText: {
-    color: "#f50057",
-    marginBottom: 5,
-    textAlign: "center"
-  }
-});
+    return () => {
+      isUnmount=true;
+    };
+  }, [])
 
-class Login extends Component {
-  state = { email: "", password: "" };
 
-  handleEmailChange = ({ target }) => {
-    this.setState({ email: target.value });
-  };
+  const onFinish = async (values) => {
+    console.log('Success:', values);
 
-  handlePasswordChange = ({ target }) => {
-    this.setState({ password: target.value });
-  };
-
-  handleSubmit = () => {
-    const { dispatch } = this.props;
-    const { email, password } = this.state;
-
-    dispatch(loginUser(email, password));
-  };
-
-  render() {
-    const { classes, loginError, isAuthenticated } = this.props;
-    if (isAuthenticated) {
-      return <Redirect to="/" />;
-    } else {
-      return (
-        <>
-         
-
-          <Container component="main" maxWidth="xs">
-            <Paper className={classes.paper}>
-              <Avatar className={classes.avatar}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-            </Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                onChange={this.handleEmailChange}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                onChange={this.handlePasswordChange}
-              />
-              {loginError && (
-                <Typography component="p" className={classes.errorText}>
-                  Incorrect email or password.
-                </Typography>
-              )}
-              <Button
-                type="button"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={this.handleSubmit}
-              >
-                Sign In
-            </Button>
-            </Paper>
-          </Container>
-        </>
-      );
+    try {
+      setError('')
+      setLoading(true)
+      await login(values.email, values.password)
+      history.push("/dashboard")
+    } catch {
+      setError('Failed to log in')
     }
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    isLoggingIn: state.auth.isLoggingIn,
-    loginError: state.auth.loginError,
-    isAuthenticated: state.auth.isAuthenticated
+    setLoading(false)
   };
-}
 
-export default withStyles(styles)(connect(mapStateToProps)(Login));
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  return (
+    <Form className="form"
+      {...layout}
+      name="basic"
+      initialValues={{
+        remember: true,
+        email:"ttt@ttt.com" ,
+        password: "holamundo"
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
+      <Form.Item
+        {...tailLayout}
+      >
+        {error && <Alert message={error} type="warning" />}
+      </Form.Item>
+      <Form.Item
+        label="Email"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your email!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your password!',
+          },
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item >
+        <Text>¿Necesita una cuenta? <Link to="/auth/register">Registrarse</Link></Text>
+      </Form.Item>
+
+      <Form.Item {...tailLayout}>
+        <Button disabled={loading} type="primary" htmlType="submit">
+          Login
+          </Button>
+      </Form.Item>
+    </Form>
+  );
+};
+
+export default LoginContainer;
