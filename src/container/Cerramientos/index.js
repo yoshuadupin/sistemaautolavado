@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button, Table, Space, Col, Row, Input } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import FormOnModal from './FormOnModal'
+import RegisterForm from './RegisterForm'
+import EditForm from './EditForm';
 const { Search } = Input;
 
 const dataSource = [
@@ -59,22 +60,25 @@ const columns = [
 
 ];
 
-
-
 const ContentCerramiento = () => {
 
     const [cerramientos, setcerramientos] = useState(dataSource)
-    const [modalText, setmodalText] = useState('Content of  the modal')
     const [visibleModal, setvisibleModal] = useState(false)
     const [confirmLoading, setconfirmLoading] = useState(false)
-    const [componentSize, setComponentSize] = useState('default');
+    const [crud, setcrud] = useState(
+        {
+            deleteKey:-1,
+            hadSelected:false
+        })
+    const [deleteKey, setdeleteKey] = useState(-1)
+    const [haveSelected, sethaveSelected] = useState(false)
 
-    const handleChange = values => {
+    const onFinish = values => {
         let { nombre, ubicacion, numEmpleados, numCarritos } = values;
         let actualDate = new Date();
         let dateFormat = `${actualDate.getDate()}.${actualDate.getMonth() + 1}.${actualDate.getFullYear()}`
         let tempCerramiento = {
-            key: cerramientos.length,
+            key: cerramientos.length + 1,
             nombre: nombre,
             creacion: dateFormat,
             ubicacion: ubicacion,
@@ -84,16 +88,16 @@ const ContentCerramiento = () => {
         setcerramientos(cerramientos.concat(tempCerramiento))
     }
 
+    const handleDelete = () => {
+        setcerramientos(cerramientos => cerramientos.filter((cerr) => { return cerr.key != crud.deleteKey }))
+    }
+
     const showModal = () => {
         setvisibleModal(true);
     };
 
     const handleOk = () => {
-
-        setmodalText('The modal will be closed after two seconds');
         setconfirmLoading(true);
-
-
         setvisibleModal(false)
         setconfirmLoading(false)
     };
@@ -103,6 +107,19 @@ const ContentCerramiento = () => {
         setvisibleModal(false)
     };
 
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+            setcrud({
+                deleteKey:selectedRowKeys,
+                hadSelected:true
+            })
+        },
+        getCheckboxProps: record => ({
+            disabled: record.name === 'Disabled User', // Column configuration not to be checked
+            name: record.name,
+        }),
+    };
 
     return (
         <div>
@@ -110,7 +127,7 @@ const ContentCerramiento = () => {
                 <Row>
                     <Col span={8}>
                         <Space size='large' style={{ margin: '16 px' }}>
-                            <Button type="primary">Eliminar</Button>
+                            <Button onClick={handleDelete} type="primary">Eliminar</Button>
                         </Space>
                     </Col>
                     <Col span={8} offset={7}>
@@ -123,11 +140,12 @@ const ContentCerramiento = () => {
                                 onOk={handleOk}
                                 confirmLoading={confirmLoading}
                                 onCancel={handleCancel}
-                                destroyOnClose={FormOnModal}
+                                destroyOnClose={RegisterForm}
                             >
-                                <FormOnModal handleChange={handleChange} />
+                                {<RegisterForm onFinish={onFinish} />}
                             </Modal>
                             <Button type="primary">Editar</Button>
+                         
                             <Search
                                 placeholder="Buscar..."
                                 onSearch={value => console.log(value)}
@@ -137,7 +155,11 @@ const ContentCerramiento = () => {
                     </Col>
                 </Row>
             </div>
-            <Table dataSource={cerramientos} columns={columns} />
+            <Table rowSelection={{
+                type: 'radio',
+                ...rowSelection,
+            }}
+                dataSource={cerramientos} columns={columns} />
         </div>)
 
 }

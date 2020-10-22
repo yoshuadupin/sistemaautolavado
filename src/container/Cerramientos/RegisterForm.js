@@ -1,4 +1,4 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, InputNumber } from 'antd';
 import React from 'react'
 
 const layout = {
@@ -9,12 +9,12 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-const FormOnModal = (props) => {
+const RegisterForm = (props) => {
 
 
     const onFinish = values => {
         console.log('Success:', values);
-        props.handleChange(values)
+        props.onFinish(values)
     }
 
     const onFinishFailed = errorInfo => {
@@ -49,14 +49,14 @@ const FormOnModal = (props) => {
                 name="numEmpleados"
                 rules={[{ required: true, message: 'Please input your username!' }]}
             >
-                <Input />
+                <InputNumber />
             </Form.Item>
             <Form.Item
                 label="N° carritos"
                 name="numCarritos"
                 rules={[{ required: true, message: 'Please input your username!' }]}
             >
-                <Input />
+                <InputNumber />
             </Form.Item>
 
 
@@ -70,4 +70,4 @@ const FormOnModal = (props) => {
     )
 }
 
-export default FormOnModal;
+export default RegisterForm;
