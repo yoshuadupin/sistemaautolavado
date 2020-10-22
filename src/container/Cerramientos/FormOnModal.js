@@ -1,4 +1,4 @@
-import { Form , Input , Button } from 'antd';
+import { Form, Input, Button } from 'antd';
 import React from 'react'
 
 const layout = {
@@ -9,11 +9,13 @@ const tailLayout = {
     wrapperCol: { offset: 8, span: 16 },
 };
 
-const FormOnModal = () => {
+const FormOnModal = (props) => {
+
 
     const onFinish = values => {
         console.log('Success:', values);
-    };
+        props.handleChange(values)
+    }
 
     const onFinishFailed = errorInfo => {
         console.log('Failed:', errorInfo);

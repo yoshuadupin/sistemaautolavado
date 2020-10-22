@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  Modal, Button, Table, Space, Col, Row, Input} from 'antd';
+import { Modal, Button, Table, Space, Col, Row, Input } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import FormOnModal from './FormOnModal'
 const { Search } = Input;
@@ -11,7 +11,7 @@ const dataSource = [
         creacion: '6.10.2015',
         ubicacion: 'Blv. Morazán',
         numEmpleados: '5',
-        numCarritos: '3',
+        numCarritos: '3'
     }, {
         key: '2',
         nombre: 'Multiplaza',
@@ -63,12 +63,26 @@ const columns = [
 
 const ContentCerramiento = () => {
 
-
+    const [cerramientos, setcerramientos] = useState(dataSource)
     const [modalText, setmodalText] = useState('Content of  the modal')
     const [visibleModal, setvisibleModal] = useState(false)
     const [confirmLoading, setconfirmLoading] = useState(false)
     const [componentSize, setComponentSize] = useState('default');
 
+    const handleChange = values => {
+        let { nombre, ubicacion, numEmpleados, numCarritos } = values;
+        let actualDate = new Date();
+        let dateFormat = `${actualDate.getDate()}.${actualDate.getMonth() + 1}.${actualDate.getFullYear()}`
+        let tempCerramiento = {
+            key: cerramientos.length,
+            nombre: nombre,
+            creacion: dateFormat,
+            ubicacion: ubicacion,
+            numEmpleados: numEmpleados,
+            numCarritos: numCarritos
+        }
+        setcerramientos(cerramientos.concat(tempCerramiento))
+    }
 
     const showModal = () => {
         setvisibleModal(true);
@@ -79,11 +93,9 @@ const ContentCerramiento = () => {
         setmodalText('The modal will be closed after two seconds');
         setconfirmLoading(true);
 
-        setTimeout(() => {
 
-            setvisibleModal(false)
-            setconfirmLoading(false)
-        }, 2000);
+        setvisibleModal(false)
+        setconfirmLoading(false)
     };
 
     const handleCancel = () => {
@@ -111,8 +123,9 @@ const ContentCerramiento = () => {
                                 onOk={handleOk}
                                 confirmLoading={confirmLoading}
                                 onCancel={handleCancel}
+                                destroyOnClose={FormOnModal}
                             >
-                                <FormOnModal />
+                                <FormOnModal handleChange={handleChange} />
                             </Modal>
                             <Button type="primary">Editar</Button>
                             <Search
@@ -124,7 +137,7 @@ const ContentCerramiento = () => {
                     </Col>
                 </Row>
             </div>
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={cerramientos} columns={columns} />
         </div>)
 
 }
